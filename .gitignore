@@ -1,0 +1,8 @@
+.DS_Store
+*.pyc
+__pycache__/
+
+# Keep raw/private build inputs local. The GitHub Pages app uses generated files in docs/data/.
+*.csv
+*.zip
+RxNorm_full_prescribe_*/

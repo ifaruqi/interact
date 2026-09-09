@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>interact. Drug Interaction Checker</title>
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="checker">
+        <header class="topbar">
+          <div class="headline-block">
+            <p class="brand">interact.</p>
+            <p class="eyebrow">clinical reference prototype / Indonesia product lookup</p>
+            <h1>Check a combination. <span>See what matters.</span></h1>
+            <div class="safety-banner">
+              Prototype only. Results are dataset-backed but not medically validated and must not be used alone for patient care.
+            </div>
+          </div>
+          <div class="signal-panel" aria-hidden="true">
+            <div class="signal-grid">
+              <i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div id="dataStatus" class="status">Loading data...</div>
+          </div>
+        </header>
+
+        <section class="example-row" aria-label="Example combinations">
+          <button class="example-button" type="button" data-current="Warfarin" data-new="Aspirin">Warfarin + Aspirin</button>
+          <button class="example-button" type="button" data-current="Simvastatin" data-new="Clarithromycin">Simvastatin + Clarithromycin</button>
+          <button class="example-button" type="button" data-current="Lisinopril" data-new="Ibuprofen">Lisinopril + Ibuprofen</button>
+          <button class="example-button" type="button" data-current="Teosal" data-new="Sanmol">Teosal + Sanmol</button>
+        </section>
+
+        <section class="entry-grid" aria-label="Medication entry">
+          <div class="entry-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="step-label">01 / Select</p>
+                <h2>Current Medications</h2>
+              </div>
+              <button id="clearCurrent" class="icon-button" type="button" title="Clear current medications">×</button>
+            </div>
+            <div class="search-row">
+              <label for="currentSearch">Patient is taking</label>
+              <input id="currentSearch" type="search" autocomplete="off" placeholder="Type product, brand, or active ingredient" />
+            </div>
+            <div id="currentSuggestions" class="suggestions"></div>
+            <div id="currentSelected" class="selected-list"></div>
+          </div>
+
+          <div class="entry-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="step-label">02 / Compare</p>
+                <h2>New Medications</h2>
+              </div>
+              <button id="clearNew" class="icon-button" type="button" title="Clear new medications">×</button>
+            </div>
+            <div class="search-row">
+              <label for="newSearch">New prescription</label>
+              <input id="newSearch" type="search" autocomplete="off" placeholder="Type product, brand, or active ingredient" />
+            </div>
+            <div id="newSuggestions" class="suggestions"></div>
+            <div id="newSelected" class="selected-list"></div>
+          </div>
+        </section>
+
+        <section class="actions">
+          <button id="checkButton" class="primary-button" type="button">Check interaction</button>
+          <button id="resetButton" class="secondary-button" type="button">Reset</button>
+        </section>
+
+        <section id="results" class="results" aria-live="polite"></section>
+      </section>
+
+      <aside class="sidebar">
+        <p class="eyebrow">Workflow</p>
+        <h2>Select. Review. Discuss.</h2>
+        <p>Brand and product names resolve through BPOM composition data. Ingredient names match DDInter directly when available.</p>
+        <p>Uncovered ingredients are shown explicitly. Missing data is never treated as confirmed safety.</p>
+        <div id="metadata" class="metadata"></div>
+        <div class="disclaimer">
+          Prototype only. Cross-check clinically important findings with a pharmacist or clinical drug reference.
+        </div>
+      </aside>
+    </main>
+
+    <script src="app.js?v=5"></script>
+  </body>
+</html>
