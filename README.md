@@ -34,10 +34,10 @@ The app is fully static. It does not send medicine names to a server and does no
 
 Current generated browser dataset:
 
-- Interaction pairs: `214,987`
-- DDInter/MecDDI drug concepts: `1,959`
+- Interaction pairs: `235,821`
+- DDInter/MecDDI drug concepts: `1,971`
 - BPOM product rows: `23,481`
-- Interaction shards: `1,885`
+- Interaction shards: `1,895`
 
 Source files used by the local build:
 
@@ -52,8 +52,9 @@ The raw CSV files are intentionally not committed to the repository. The generat
 
 Severity data:
 
-- Source: DDInter bulk CSV download from `ddinter2.scbdd.com/download/`
-- Coverage used here: `160,235` drug-drug pairs across 8 ATC-category files: A, B, D, H, L, P, R, V
+- Source: DDInter 2.0 bulk CSV files, `ddinter_downloads_code_<ATC>.csv`
+- Coverage used here: `234,981` drug-drug pairs across all 14 ATC-category files: A, B, C, D, G, H, J, L, M, N, P, R, S, V
+- The download page at `ddinter2.scbdd.com/download/` links only A, B, D, H, L, P, R, V. The C, G, J, M, N, S files are served from the same path (`/static/media/download/`) with the same columns and were added on 2026-10-10. No pair has conflicting severity levels across files.
 - Field attribution: `severity_source = DDInter`
 
 Mechanism/explanation data:
@@ -64,12 +65,20 @@ Mechanism/explanation data:
 
 Merged interaction dataset:
 
-- Total unique pairs: `214,987`
-- Severity and mechanism: `98,135`
-- Severity only: `62,100`
-- Mechanism only: `54,752`
+- Total unique pairs: `235,821`
+- Severity and mechanism: `152,047`
+- Severity only: `82,934`
+- Mechanism only: `840`
 
-Important interpretation note: this project should be described as using the DDInter bulk-download severity export plus MecDDI mechanism text. It should not be described as complete DDInter 2.0 coverage.
+Important interpretation note: this project should be described as using the DDInter 2.0 bulk-download severity export plus MecDDI mechanism text. DDInter's drug-food and drug-disease interactions are not included.
+
+Many drugs commonly sold in Indonesia are not in DDInter at all, for example domperidone, metamizole, etoricoxib, ambroxol, bromhexine, guaifenesin, candesartan, and mometasone. Products containing them are shown with those ingredients unchecked.
+
+## License And Attribution
+
+DDInter data is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). The generated interaction data in `docs/data/` is an adaptation of it, so this site must credit DDInter, stay non-commercial, and share the adapted data under the same license. The site footer carries this attribution.
+
+DDInter 2.0 reference: Nucleic Acids Research 53(D1):D1356, 2025, doi:[10.1093/nar/gkae726](https://doi.org/10.1093/nar/gkae726).
 
 ## BPOM Product Mapping
 
@@ -83,8 +92,8 @@ BPOM product composition text is regulatory free text, not a standardized ingred
 Current BPOM matching result after reviewed mappings:
 
 - Rows with nonblank composition: `19,608`
-- Full DDInter ingredient match: `13,695` (`69.8%`)
-- Full or partial match: `15,427` (`78.7%`)
+- Full DDInter ingredient match: `13,697` (`69.9%`)
+- Full or partial match: `15,429` (`78.7%`)
 
 When a component is recognized in BPOM/RxNorm-style nomenclature but absent from the current DDInter/MecDDI interaction dataset, the UI should communicate that absence directly. Absence from this dataset must never be treated as proof of safety.
 
@@ -96,11 +105,17 @@ Do not use this project to make diagnoses, prescriptions, dose changes, substitu
 
 ## Rebuild The Static Data
 
-From the repository root:
+From the repository root, run the pipeline in order:
 
 ```bash
+python3 merge_ddinter.py
+python3 bpom_ddinter_clean_map.py
 python3 build_github_pages_data.py
 ```
+
+- `merge_ddinter.py` combines every `ddinter_downloads_code_*.csv` with `DDInter2_0_mecddi.csv` into `ddinter_merged.csv`.
+- `bpom_ddinter_clean_map.py` re-maps BPOM compositions against that vocabulary and the reviewed dictionaries. `build_github_pages_data.py` reads its output, so skipping this step leaves product mappings stale.
+- `build_github_pages_data.py` writes the browser data.
 
 This regenerates:
 

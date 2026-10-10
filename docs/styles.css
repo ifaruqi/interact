@@ -613,6 +613,24 @@ h2 {
   font-weight: 760;
 }
 
+.site-footer {
+  width: min(1380px, calc(100vw - 36px));
+  margin: 0 auto;
+  padding: 0 0 28px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.site-footer p {
+  margin: 0;
+  max-width: 900px;
+}
+
+.site-footer a {
+  color: var(--blue);
+}
+
 @media (max-width: 980px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -632,6 +650,11 @@ h2 {
   .checker,
   .sidebar {
     padding: 16px;
+  }
+
+  .site-footer {
+    width: min(100vw - 20px, 1380px);
+    padding-bottom: 16px;
   }
 
   .topbar {
